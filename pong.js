@@ -17,13 +17,13 @@ var rtScore = Goomba.Entity("Scoreboard")
 
 var lftPaddle = Goomba.Entity("Paddle")
                     .attr({x: 10, y: 20, w: 30, h: 100})
-                    .control(Goomba.W, function () { this.y -= 10; })
-                    .control(Goomba.S, function () { this.y += 10; });
+                    .control(Goomba.Key.W, function () { this.y -= 10; })
+                    .control(Goomba.Key.S, function () { this.y += 10; });
 
 var rtPaddle = Goomba.Entity("Paddle")
                     .attr({x: 590, y: 20, w: 30, h: 100})
-                    .control(Goomba.UP_ARROW, function () { this.y -= 10; })
-                    .control(Goomba.DOWN_ARROW, function () { this.y += 10; });
+                    .control(Goomba.Key.UP_ARROW, function () { this.y -= 10; })
+                    .control(Goomba.Key.DOWN_ARROW, function () { this.y += 10; });
 
 var ball = Goomba.Entity()
                     .attr({x: 300, y: 150, w: 10, h: 10, velX: 4, velY: 4})
