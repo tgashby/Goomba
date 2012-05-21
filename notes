@@ -1,0 +1,87 @@
+init
+	viewport.init
+		-> Make Canvas element
+	trigger("Load")
+		each
+	timer.init
+		timer.step
+
+e
+	UID
+	addComponent
+	trigger
+
+attr
+	trigger
+
+multiway
+	keydown (array) -> keyboard event handling
+
+
+bind
+	addEvent
+
+onHit
+	collision detection
+
+EITHER color or image loading
+
+
+*******************************************************************************
+_______________________________________________________________________________
+
+
+
+Animation
+Collision
+States
+Scoring
+
+
+
+Milestones:
+
+1: Support Pong!
+
+2: Collisions in memory
+	4 Basics (Animation, Collision, States, Scoring)
+
+3: Behavior States (AI Reading)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
