@@ -199,17 +199,6 @@
             return this;
         },
 
-        // controls: function (bindings) {
-        //     for (var key in bindings) {
-        //         this.bindEvent("Update", function () {
-        //             if (Goomba.keyboard.state[Goomba.keyboard.keys[key]]) {
-        //                 bindings[key].call(this);
-        //             };
-        //         });
-        //     }
-
-        //     return this;
-        // }
         controls: function(bindings) {
             var x = this;
 
@@ -300,21 +289,29 @@
                 if (entities.hasOwnProperty(id)) {
                     var e = entities[id];
 
-                    if ("img" in e && "x" in e && "y" in e) {
-                        ctx.drawImage(e.img, e.x, e.y)
-                    } else if ("x" in e && "y" in e && "w" in e && "h" in e) {
-                        ctx.beginPath();
-                        ctx.rect(e.x, e.y, e.w, e.h);
-                        ctx.fillStyle = e.color || '#8ED6FF';
-                        ctx.fill();
-                        ctx.stroke();
-                    } else if ("img" in e) { // Badly made entity w/ image
-                        console.log("Entity: " + e.id + " missing x or y attribute");
-                    } else { // Badly made entity without image
-                        console.log("Entity: " + e.id + " missing x, y, w, or h attribute");
-                    }
+                    if (!e.draw) {
+                        console.log("Cannot draw entity: " + e + ", no draw method");
+                        continue;
+                    };
+
+                    ctx.save();
+                    e.draw(ctx);
+                    ctx.restore();
+
+                    // if ("img" in e && "x" in e && "y" in e) {
+                    //     ctx.drawImage(e.img, e.x, e.y)
+                    // } else if ("x" in e && "y" in e && "w" in e && "h" in e) {
+                    //     ctx.beginPath();
+                    //     ctx.rect(e.x, e.y, e.w, e.h);
+                    //     ctx.fillStyle = e.color || '#8ED6FF';
+                    //     ctx.fill();
+                    //     ctx.stroke();
+                    // } else if ("img" in e) { // Badly made entity w/ image
+                    //     console.log("Entity: " + e.id + " missing x or y attribute");
+                    // } else { // Badly made entity without image
+                    //     console.log("Entity: " + e.id + " missing x, y, w, or h attribute");
+                    // }
                 };
-                
             }
         },
 
@@ -330,6 +327,10 @@
             // If we have properties
             if (arguments.length > 0) {
                 ent.addComponent.apply(ent, arguments);
+            };
+
+            if (!ent.draw) {
+                ent.addComponent("Color");
             };
 
             return ent;
@@ -459,6 +460,26 @@
              a.y < b.y + b.h &&
              a.y + a.h > b.y;
     }
+
+    Goomba.newComponent("Color", {
+        init: function () {
+            this.draw = function(ctx) {
+                ctx.beginPath();
+                ctx.rect(this.x, this.y, this.w, this.h);
+                ctx.fillStyle = this.color || '#8ED6FF';
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+    });
+
+    Goomba.newComponent("Image", {
+        init: function () {
+            this.draw = function(ctx) {
+                ctx.drawImage(this.img, this.x, this.y);
+            }
+        }
+    });
 
     window.Goomba = Goomba;
 })(window);
