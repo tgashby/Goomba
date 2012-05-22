@@ -26,9 +26,16 @@ var ball = Goomba.newEntity("Collidable")
         }
 
         // Reaches either side
-        if (this.x < 0 || this.x > Game.width) {
+        if (this.x < 0) {
             this.x = Game.width / 2;
             this.y = Game.height / 2;
+            Goomba.triggerEvent("RightScore");
+        }
+
+        if (this.x > Game.width) {
+            this.x = Game.width / 2;
+            this.y = Game.height / 2;
+            Goomba.triggerEvent("LeftScore");
         }
 
         this.x += this.velX;
@@ -36,4 +43,16 @@ var ball = Goomba.newEntity("Collidable")
     })
     .onHit("Paddle", function () {
         this.velX = -this.velX;
+    });
+
+Goomba.newEntity("Scoreboard")
+    .addAttrs({x: 0, y: 10, text: "Left Points: ", score: 0})
+    .bindEvent("LeftScore", function () {
+        this.score++;
+    });
+
+Goomba.newEntity("Scoreboard")
+    .addAttrs({x: 500, y: 10, font: "normal 12px Times New Roman", text: "Right Points: ", score: 0})
+    .bindEvent("RightScore", function () {
+        this.score++;
     });

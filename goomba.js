@@ -130,8 +130,10 @@
             return this;
         },
 
-        requiresComponent: function (comps) {
+        requiresComponent: function (comp) {
+            this.addComponent(comp);
 
+            return this;
         },
 
         hasComponenet: function (comp) {
@@ -461,26 +463,6 @@
              a.y + a.h > b.y;
     }
 
-    Goomba.newComponent("Color", {
-        init: function () {
-            this.draw = function(ctx) {
-                ctx.beginPath();
-                ctx.rect(this.x, this.y, this.w, this.h);
-                ctx.fillStyle = this.color || '#8ED6FF';
-                ctx.fill();
-                ctx.stroke();
-            }
-        }
-    });
-
-    Goomba.newComponent("Image", {
-        init: function () {
-            this.draw = function(ctx) {
-                ctx.drawImage(this.img, this.x, this.y);
-            }
-        }
-    });
-
     window.Goomba = Goomba;
 })(window);
 
@@ -632,5 +614,34 @@
             RIGHT: 2
         }
     });
+
+    Goomba.newComponent("Color", {
+        init: function () {
+            this.draw = function (ctx) {
+                ctx.beginPath();
+                ctx.rect(this.x, this.y, this.w, this.h);
+                ctx.fillStyle = this.color || '#8ED6FF';
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+    });
+
+    Goomba.newComponent("Image", {
+        init: function () {
+            this.draw = function (ctx) {
+                ctx.drawImage(this.img, this.x, this.y);
+            }
+        }
+    });
+
+    Goomba.newComponent("Scoreboard", {
+        init: function() {
+            this.draw = function (ctx) {
+                ctx.font = this.font || "normal 12px Verdana";
+                ctx.fillText(this.text + this.score, this.x, this.y);
+            }
+        }
+    })
 })(Goomba, window, window.document);
 

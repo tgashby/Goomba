@@ -2,24 +2,6 @@
 var Game = {width: 600, height: 300};
 
 Goomba.init(Game.width, Game.height);
-
-Goomba.newComponent("Test", {
-    init: function () {
-        this.draw = function (context) {
-            var centerX = Game.width / 2;
-            var centerY = Game.height / 2;
-            var radius = 70;
-
-            context.beginPath();
-            context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-            context.fillStyle = "#8ED6FF";
-            context.fill();
-            context.lineWidth = 5;
-            context.strokeStyle = "black";
-            context.stroke();
-        }
-    }
-})
  
 var lftPaddle = Goomba.newEntity("Paddle")
     .addAttrs({x: 10, y: 20, w: 15, h: 150, color: "#000000"})
@@ -44,9 +26,16 @@ var ball = Goomba.newEntity("Collidable")
         }
 
         // Reaches either side
-        if (this.x < 0 || this.x > Game.width) {
+        if (this.x < 0) {
             this.x = Game.width / 2;
             this.y = Game.height / 2;
+            Goomba.triggerEvent("RightScore");
+        }
+
+        if (this.x > Game.width) {
+            this.x = Game.width / 2;
+            this.y = Game.height / 2;
+            Goomba.triggerEvent("LeftScore");
         }
 
         this.x += this.velX;
@@ -56,4 +45,14 @@ var ball = Goomba.newEntity("Collidable")
         this.velX = -this.velX;
     });
 
-var circle = Goomba.newEntity("Test");
+Goomba.newEntity("Scoreboard")
+    .addAttrs({x: 0, y: 10, text: "Left Points: ", score: 0})
+    .bindEvent("LeftScore", function () {
+        this.score++;
+    });
+
+Goomba.newEntity("Scoreboard")
+    .addAttrs({x: 500, y: 10, font: "normal 12px Times New Roman", text: "Right Points: ", score: 0})
+    .bindEvent("RightScore", function () {
+        this.score++;
+    });
