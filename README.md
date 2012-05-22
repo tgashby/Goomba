@@ -69,7 +69,7 @@ Goomba.newEntity("Collidable")
 ```
 That's it. Everything else is handled for you. No need to worry about game loops or rendering.<br />
 <br />
-<br />
+
 #### Built in Components
 ##### Collidable
 For any entity that will collide with something. <br />
@@ -80,7 +80,7 @@ onHit("Component", function () { ... }) - Runs callbacks when a collision with t
 <br />
 Attributes required:<br />
 x, y, w, h or x, y, img or setBounds called with a valid polygon<br />
-<br />
+
 ##### Image
 For any entity that will use an image instead of a solid rectangle.<br />
 <br />
@@ -91,7 +91,7 @@ N/A<br />
 <br />
 Attributes required:<br />
 img<br />
-<br />
+
 ##### Color
 Inherited by default, unless Image or another component with a draw method is used.<br />
 <br />
@@ -103,7 +103,7 @@ x, y, w, h<br />
 <br />
 Attributes optional:<br />
 color (default is '#8ED6FF')<br />
-<br />
+
 ##### Scoreboard
 For any entity that will act as a text scoreboard.<br />
 <br />
@@ -115,5 +115,5 @@ x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex
 <br />
 Attributes optional:<br />
 font (default to "normal 12px Verdana")<br />
-<br />
+
 ##### More to come....
