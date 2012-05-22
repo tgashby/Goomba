@@ -67,53 +67,53 @@ Goomba.newEntity("Collidable")
         this.velX = -this.velX;
     });
 ```
-That's it. Everything else is handled for you. No need to worry about game loops or rendering.
-
-
+That's it. Everything else is handled for you. No need to worry about game loops or rendering.<br />
+<br />
+<br />
 #### Built in Components
 ##### Collidable
-For any entity that will collide with something. 
-
-Methods:
-onHit("Component", function () { ... }) - Runs callbacks when a collision with the given component occurs.
-(optional) setBounds(polygon) - set the bounds of the entity, the polygon must have attributes x, y, w, h
-
-Attributes required:
-x, y, w, h or x, y, img or setBounds called with a valid polygon
-
+For any entity that will collide with something. <br />
+<br />
+Methods:<br />
+onHit("Component", function () { ... }) - Runs callbacks when a collision with the given component occurs.<br />
+(optional) setBounds(polygon) - set the bounds of the entity, the polygon must have attributes x, y, w, h<br />
+<br />
+Attributes required:<br />
+x, y, w, h or x, y, img or setBounds called with a valid polygon<br />
+<br />
 ##### Image
-For any entity that will use an image instead of a solid rectangle.
-
-** This isn't fully developed yet, as Goomba's image loading doesn't exist, but expect it soon **
-
-Methods:
-N/A
-
-Attributes required:
-img
-
+For any entity that will use an image instead of a solid rectangle.<br />
+<br />
+** This isn't fully developed yet, as Goomba's image loading doesn't exist, but expect it soon **<br />
+<br />
+Methods:<br />
+N/A<br />
+<br />
+Attributes required:<br />
+img<br />
+<br />
 ##### Color
-Inherited by default, unless Image or another component with a draw method is used.
-
-Methods:
-N/A
-
-Attributes required:
-x, y, w, h
-
-Attributes optional:
-color (default is '#8ED6FF')
-
+Inherited by default, unless Image or another component with a draw method is used.<br />
+<br />
+Methods:<br />
+N/A<br />
+<br />
+Attributes required:<br />
+x, y, w, h<br />
+<br />
+Attributes optional:<br />
+color (default is '#8ED6FF')<br />
+<br />
 ##### Scoreboard
-For any entity that will act as a text scoreboard.
-
-Methods:
-N/A
-
-Attributes required:
-x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex: "Left Player Points: ")
-
-Attributes optional:
-font (default to "normal 12px Verdana")
-
+For any entity that will act as a text scoreboard.<br />
+<br />
+Methods:<br />
+N/A<br />
+<br />
+Attributes required:<br />
+x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex: "Left Player Points: ")<br />
+<br />
+Attributes optional:<br />
+font (default to "normal 12px Verdana")<br />
+<br />
 ##### More to come....
