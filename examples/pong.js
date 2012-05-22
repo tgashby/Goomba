@@ -3,21 +3,24 @@ var Game = {width: 600, height: 300};
 
 Goomba.init(Game.width, Game.height);
  
-var lftPaddle = Goomba.newEntity("Paddle")
-    .addAttrs({x: 10, y: 20, w: 15, h: 150, color: "#000000"})
+Goomba.newEntity("Paddle")
+    .addAttrs({x: 10, y: 50, w: 5, h: 150, color: "#000000"})
     .controls({
         W: function () { this.y -= 2 },
         S: function () { this.y += 2 }
     });
 
-var rtPaddle = Goomba.newEntity("Paddle")
-    .addAttrs({x: 570, y: 20, w: 15, h: 150, color: "#FF0000"})
+Goomba.newEntity("Paddle")
+    .addAttrs({x: 570, y: 50, w: 5, h: 150, color: "#FF0000"})
     .controls({
         UP_ARROW: function () { this.y -= 2 },
         DOWN_ARROW: function () { this.y += 2 } 
     });
 
-var ball = Goomba.newEntity("Collidable")
+// Goomba.newEntity("Paddle")
+//     .addAttrs({x: 300, y: 150, w: 4, h: 50, color: "#FFFFFF"});
+
+Goomba.newEntity("Collidable")
     .addAttrs({x: 300, y: 150, w: 10, h: 10, velX: 4, velY: 4})
     .onUpdate(function () {
         // Hit ceiling or floor

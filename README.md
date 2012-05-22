@@ -117,3 +117,25 @@ Attributes optional:<br />
 font (default to "normal 12px Verdana")<br />
 
 ##### More to come....
+
+#### Creating new drawable components
+All that is required for making new components that draw is to provide a "draw" method that takes a canvas context.
+
+Example:
+```javascript
+Goomba.newComponent("Circle", {
+    init: function () {
+        this.draw = function (context) {
+            context.beginPath();
+            context.arc(this.x, this.y, 50, 0, 2 * Math.PI, false);
+            context.fillStyle = "#8ED6FF";
+            context.fill();
+            context.lineWidth = 5;
+            context.strokeStyle = "black";
+            context.stroke();
+        }
+    }
+})
+```
+
+If you make any new entities with the "Circle" component, they will draw as a circle at its x, y coordinate.
