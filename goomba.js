@@ -205,15 +205,17 @@
             var x = this;
 
             for (var key in bindings) {
-                var f = (function(k) {
-                    return function() {
-                        if (Goomba.keyboard.state[Goomba.keyboard.keys[k]]) {
-                            bindings[k].call(x);
-                        }
-                    };
-                })(key);
-                
-                this.bindEvent("Update", f);
+                if (bindings.hasOwnProperty(key)) {
+                    var f = (function(k) {
+                        return function() {
+                            if (Goomba.keyboard.state[Goomba.keyboard.keys[k]]) {
+                                bindings[k].call(x);
+                            }
+                        };
+                    })(key);
+                    
+                    this.bindEvent("Update", f);
+                };
             }
 
             return this;
@@ -463,16 +465,44 @@
              a.y + a.h > b.y;
     }
 
-    window.Goomba = Goomba;
-})(window);
-
-(function (Goomba, window, document) {
     Goomba.bindEvent("KeyUp", function (event) {
         Goomba.keyboard.state[event.keyCode] = false;
     });
 
     Goomba.bindEvent("KeyDown", function (event) {
         Goomba.keyboard.state[event.keyCode] = true;
+    });
+
+    Goomba.bindEvent("MouseUp", function (event) {
+        Goomba.mouse.state[event.button] = false;
+    });
+
+    Goomba.bindEvent("MouseDown", function (event) {
+        Goomba.mouse.state[event.button] = true;
+
+        console.log("Mouse over: " + Goomba.mouse.onEntities);
+    });
+
+    Goomba.bindEvent("MouseMove", function (event) {
+        Goomba.mouse.position = {x: event.offsetX, y: event.offsetY};
+
+        Goomba.mouse.onEntities.splice(0, Goomba.mouse.onEntities.length);
+
+        for (var e in entities) {
+            if (entities.hasOwnProperty(e)) {
+                var currEnt = entities[e];
+
+                var mousePos = Goomba.mouse.position;
+
+                // Hacky way to use the existing collision code
+                mousePos.w = 1;
+                mousePos.h = 1;
+
+                if (collides(mousePos, currEnt)) {
+                    Goomba.mouse.onEntities.push(currEnt);
+                };
+            };
+        };
     });
 
     window.addEventListener('keyup', function(event) {
@@ -483,6 +513,22 @@
         Goomba.triggerEvent("KeyDown", event);
     }, false);
 
+    window.addEventListener('mousedown', function(event) {
+        Goomba.triggerEvent("MouseDown", event);
+    }, false);
+
+    window.addEventListener('mouseup', function(event) {
+        Goomba.triggerEvent("MouseUp", event);
+    }, false);
+
+    window.addEventListener('mousemove', function(event) {
+        Goomba.triggerEvent("MouseMove", event);
+    });
+
+    window.Goomba = Goomba;
+})(window);
+
+(function (Goomba, window, document) {
     Goomba.extend({
         canvas: {
             context: null,
@@ -608,10 +654,18 @@
             state: {}
         },
 
-        mouseButtons: {
-            LEFT: 0,
-            MIDDLE: 1,
-            RIGHT: 2
+        mouse: {
+            button: {
+                LEFT: 0,
+                MIDDLE: 1,
+                RIGHT: 2
+            },
+
+            state: {},
+
+            position: {},
+
+            onEntities: []
         }
     });
 
