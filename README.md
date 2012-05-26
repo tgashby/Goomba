@@ -22,7 +22,7 @@ Goomba.init(600, 300);
  
 // Create a new entity with the component "Paddle", this will be 
 // important for checking collisions later
-Goomba.newEntity("Paddle")
+Goomba.newEntity("Paddle, Color")
     // Add attributes to the paddle, x, y, width, height, 
     // and an optional color
     .addAttrs({x: 10, y: 20, w: 15, h: 150, color: "#000000"})
@@ -32,7 +32,7 @@ Goomba.newEntity("Paddle")
         S: function () { this.y += 2 }
     });
 
-Goomba.newEntity("Paddle")
+Goomba.newEntity("Paddle, Color")
     .addAttrs({x: 570, y: 20, w: 15, h: 150, color: "#FF0000"})
     .controls({
         UP_ARROW: function () { this.y -= 2 },
@@ -41,7 +41,7 @@ Goomba.newEntity("Paddle")
 
 // This is the ball, it uses a built-in component, Collidable, 
 // which offers the onHit method
-Goomba.newEntity("Collidable")
+Goomba.newEntity("Collidable, Color")
     .addAttrs({x: 300, y: 150, w: 10, h: 10, velX: 4, velY: 4})
     // Goomba will do an update event 60 times per second
     // attaching an onUpdate to an entity will make sure
@@ -83,17 +83,26 @@ x, y, w, h or x, y, img or setBounds called with a valid polygon<br />
 
 ##### Image
 For any entity that will use an image instead of a solid rectangle.<br />
-<br />
-** This isn't fully developed yet, as Goomba's image loading doesn't exist, but expect it soon **<br />
+** This component is inherited by default **<br />
+All images need to be loaded before the game is started using:
+```javascript
+Goomba.load({p1: "img/p1.png", p2: "img/p2.jpg", ....}, function () {
+    startGame();
+});
+```
+All images will then be stored as
+```
+Goomba.assets.imgName
+```
 <br />
 Methods:<br />
-N/A<br />
+setImg(Goomba.assets.myImage)<br />
 <br />
 Attributes required:<br />
-img<br />
+x, y, img (handled with the call to setImg)<br />
 
 ##### Color
-Inherited by default, unless Image or another component with a draw method is used.<br />
+Used for entities that are colored rectangles.<br />
 <br />
 Methods:<br />
 N/A<br />
