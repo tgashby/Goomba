@@ -1,10 +1,11 @@
 var Game = {w: 800, h: 600}
 
-var images = {
-	player: "img/player.png"
+var assets = {
+	player: "img/player.png",
+	sound: "sound/StopRightNow.ogg"
 };
 
-Goomba.load(images, function () {
+Goomba.load(assets, function () {
 	startGame();
 
 	// Start off in the menu!
@@ -33,7 +34,8 @@ function startGame() {
 				S: function () { this.xVel += 1; },
 				SPACE: function () { this.yVel -= 7; },
 				Q: function () { this.setAnimation("walk"); },
-				W: function () { this.setAnimation("cry"); }
+				W: function () { this.setAnimation("cry"); },
+				Z: function () { Goomba.assets.sound.play(); }
 			})
 			.onUpdate(function () {
 				// Player-y stuff, jumping, etc

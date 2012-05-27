@@ -358,6 +358,10 @@
             var loadCount = 0;
             var n = Object.keys(data).length;
 
+            if (!Goomba.audio.loaded) {
+                Goomba.audio.init();
+            }
+
             function assetLoaded() {
                 loadCount++;
 
@@ -368,9 +372,28 @@
 
             for (var name in data) {
                 var url = data[name];
-                this.assets[name] = new Image();
+
+                var ext = url.substr(url.lastIndexOf('.') + 1).toLowerCase();
+
+                if (Goomba.audio.supported[ext]) {
+                    this.assets[name] = new Audio(name);
+                    this.assets[name].id = url.substr(url.lastIndexOf('/') + 1).toLowerCase();
+                    this.assets[name].preload = "auto";
+
+                    // Audio elemnts don't have an onload, cheat and increment anyway
+                    loadCount++;
+
+                } else if (Goomba.images.supported[ext]) {
+                    this.assets[name] = new Image();
+                    this.assets[name].onload = assetLoaded;
+                } else {
+                    console.log("Unsupported ext: " + ext + " on file: " + url);
+                    return;
+                }
+
                 this.assets[name].src = url;
-                this.assets[name].onload = assetLoaded;
+
+                this.assets[name].onerror = function () { console.log("Error with " + name); };
             }
         },
 
@@ -381,6 +404,42 @@
             for (var key in frames) {
                 image[key] = frames[key];
             };
+        },
+
+        audio: {
+            supported: {},
+            loaded: false,
+            codecs: {
+                ogg: 'audio/ogg; codecs="vorbis"',
+                wav: 'audio/wav; codecs="1"',
+                mp3: 'audio/mpeg; codecs="mp3"',
+                m4a: 'audio/mp4; codecs="m4a.40.2"'
+            },
+
+            init: function () {
+                var audio = new Audio("");
+
+                for (var type in this.codecs) {
+                    var playable = audio.canPlayType(this.codecs[type]);
+
+                    if (playable !== "" && playable !== "no") {
+                        this.supported[type] = true;
+                    } else {
+                        this.supported[type] = false;
+                    }
+                }
+
+                this.loaded = true;
+            }
+        },
+
+        images: {
+            supported: {
+                jpg: true,
+                jpeg: true,
+                gif: true,
+                png: true
+            }
         }
     });
 
@@ -568,6 +627,7 @@
 
         // With just 'name', state is switched, otherwise just created
         state: function (name, start, end) {
+
             // Changing to new state
             if (arguments.length === 1) {
                 if (this.currState !== null && 'end' in this.currState) {
