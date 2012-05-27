@@ -227,6 +227,27 @@
             }
 
             return this;
+        },
+
+        mouseControls: function (bindings) {
+            var x = this;
+
+            for (var button in bindings) {
+                if (bindings.hasOwnProperty(button)) {
+                    var f = (function (b) {
+                        return function () {
+                            if (Goomba.mouse.state[Goomba.mouse.buttons[b]] &&
+                                Goomba.mouse.onEntities.indexOf(this.id) !== -1) {
+                                bindings[b].call(x);
+                            };
+                        }
+                    })(button);
+
+                    this.bindEvent("Update", f);
+                };
+            }
+
+            return this;
         }
     };
 
@@ -249,6 +270,7 @@
         return this;
     };
 
+    // Timer
     Goomba.extend({
         timer: {
             prev: (Number(new Date)),
@@ -289,7 +311,12 @@
                     Goomba.draw();
                 };
             }
-        },
+        }
+    });
+
+    // Drawing/Loading
+    Goomba.extend({
+        assets: {},
 
         draw: function () {
             var cvs = Goomba.canvas;
@@ -327,8 +354,6 @@
             }
         },
 
-        assets: {},
-
         load: function (data, finishedCB) {
             var loadCount = 0;
             var n = Object.keys(data).length;
@@ -349,6 +374,18 @@
             }
         },
 
+        splitSprite: function (image, spriteW, spriteH, frames) {
+            image.spriteWidth = spriteW;
+            image.spriteHeight = spriteH;
+
+            for (var key in frames) {
+                image[key] = frames[key];
+            };
+        }
+    });
+
+    // Input
+    Goomba.extend({
         keyboard: {
             keys: {
                 'BACKSPACE': 8,
@@ -444,10 +481,10 @@
         },
 
         mouse: {
-            button: {
-                LEFT: 0,
-                MIDDLE: 1,
-                RIGHT: 2
+            buttons: {
+                "LEFT": 0,
+                "MIDDLE": 1,
+                "RIGHT": 2
             },
 
             state: {},
@@ -455,8 +492,11 @@
             position: {},
 
             onEntities: []
-        },
+        }
+    });
 
+    //Entities
+    Goomba.extend({
         newEntity: function () {
             var id = UID();
             var ent;
@@ -518,6 +558,39 @@
 
         isComponent: function (comp) {
             return comp in components;
+        }
+    });
+
+    // States
+    Goomba.extend({
+        states: {},
+        currState: null,
+
+        // With just 'name', state is switched, otherwise just created
+        state: function (name, start, end) {
+            // Changing to new state
+            if (arguments.length === 1) {
+                if (this.currState !== null && 'end' in this.currState) {
+                    this.currState.end.call(this);
+                };
+
+                entities = {};
+
+                this.states[name].start.call(this);
+                this.currState = this.states[name];
+
+                return this;
+            };
+
+            // Adding a state
+            this.states[name] = {};
+            this.states[name].start = start;
+
+            if (arguments.length === 3) {
+                this.states[name].end = end;
+            };
+
+            return this;
         }
     });
 
@@ -617,8 +690,6 @@
 
     Goomba.bindEvent("MouseDown", function (event) {
         Goomba.mouse.state[event.button] = true;
-
-        console.log("Mouse over: " + Goomba.mouse.onEntities);
     });
 
     Goomba.bindEvent("MouseMove", function (event) {
@@ -637,7 +708,7 @@
                 mousePos.h = 1;
 
                 if (collides(mousePos, currEnt)) {
-                    Goomba.mouse.onEntities.push(currEnt);
+                    Goomba.mouse.onEntities.push(currEnt.id);
                 };
             };
         };
@@ -732,6 +803,74 @@
                 ctx.fillText(this.text + this.score, this.x, this.y);
             }
         }
-    })
+    });
+
+    Goomba.newComponent("Animation", {
+        init: function () {
+            this.draw = function (ctx) {
+                this.animate(Date.now()); // Timestamp inside?
+
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                if (this.flip) {
+                    ctx.scale(-1, 1);
+                    ctx.translate(-this.w, 0);
+                };
+                ctx.drawImage(this.img, (this.frame % this.cellsWide) * this.img.spriteWidth, Math.floor(this.frame / this.cellsWide) * this.img.spriteHeight, this.img.spriteWidth, this.img.spriteHeight, 0, 0, this.img.spriteWidth, this.img.spriteHeight);
+                ctx.restore();
+            }
+        },
+
+        setImg: function (image) {
+            this.img = image;
+
+            this.flip = false;
+            this.cellsWide = this.img.naturalWidth / this.img.spriteWidth;
+            this.frame = 0;
+            this.currAnim = null;
+            this.lastFrame = null;
+
+            return this;
+        },
+
+        setAnimation: function (animation) {
+            this.currAnim = animation;
+            this.lastFrame = null;
+            if (this.currAnim) {
+                this.frame = 0;
+            };
+
+            return this;
+        },
+
+        animate: function (timestamp) {
+            if (!this.currAnim) {
+                return this;
+            };
+
+            var anim = this.img[this.currAnim];
+            if (!this.lastFrame) {
+                this.frame = anim.start;
+                this.lastFrame = timestamp;
+                return this;
+            };
+
+
+            var delta = 1.0 / anim.fps * 1000;
+            if (timestamp - this.lastFrame > delta) {
+                this.frame++;
+                if (this.frame > anim.end) {
+                    this.frame = anim.start;
+                };
+
+                this.lastFrame += delta;
+                return this;
+            }
+
+            return this;
+        }
+    });
+
 })(Goomba, window, window.document);
 
