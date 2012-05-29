@@ -675,11 +675,7 @@
 
         setBounds: function(poly) {
             if (!poly) {
-                if (this.img) {
-                    this.bounds = {x: 0, y: 0, w: this.img.width, h: this.img.height};
-                } else {
-                    this.bounds = {x: 0, y: 0, w: this.w, h: this.h};
-                }
+                this.bounds = {x: 0, y: 0, w: this.w, h: this.h};
             } else {
                 this.bounds = poly;
             }
@@ -725,11 +721,6 @@
     });
 
     function collides(a, b) {
-        if (b.img) {
-            b.w = b.img.width;
-            b.h = b.img.height;
-        }
-
         return a.x < b.x + b.w &&
              a.x + a.w > b.x &&
              a.y < b.y + b.h &&
@@ -852,6 +843,9 @@
         setImg: function (image) {
             this.img = image;
 
+            this.w = this.img.width;
+            this.h = this.img.height;
+
             return this;
         }
     });
@@ -868,6 +862,11 @@
     Goomba.newComponent("Animation", {
         init: function () {
             this.draw = function (ctx) {
+                if (!this.img) {
+                    console.log("No image associated with animation entity");
+                    return;
+                };
+
                 this.animate(Date.now()); // Timestamp inside?
 
                 ctx.save();
@@ -877,7 +876,8 @@
                     ctx.scale(-1, 1);
                     ctx.translate(-this.w, 0);
                 };
-                ctx.drawImage(this.img, (this.frame % this.cellsWide) * this.img.spriteWidth, Math.floor(this.frame / this.cellsWide) * this.img.spriteHeight, this.img.spriteWidth, this.img.spriteHeight, 0, 0, this.img.spriteWidth, this.img.spriteHeight);
+
+                ctx.drawImage(this.img, (this.frame % this.cellsWide) * this.w, Math.floor(this.frame / this.cellsWide) * this.h, this.w, this.h, 0, 0, this.w, this.h);
                 ctx.restore();
             }
         },
@@ -891,17 +891,31 @@
             this.currAnim = null;
             this.lastFrame = null;
 
+            this.w = this.img.spriteWidth;
+            this.h = this.img.spriteHeight;
+
             return this;
         },
 
         setAnimation: function (animation) {
-            this.currAnim = animation;
-            this.lastFrame = null;
-            if (this.currAnim) {
-                this.frame = 0;
+            if (this.currAnim !== animation) {
+                this.currAnim = animation;
+                this.lastFrame = null;
+                if (this.currAnim) {
+                    this.frame = 0;
+                };
             };
 
             return this;
+        },
+
+        resetAnimation: function (animation) {
+            if (this.currAnim === animation) {
+                this.lastFrame = null;
+                this.frame = 0;
+            } else {
+                this.setAnimation(animation);
+            }
         },
 
         animate: function (timestamp) {
@@ -915,7 +929,6 @@
                 this.lastFrame = timestamp;
                 return this;
             };
-
 
             var delta = 1.0 / anim.fps * 1000;
             if (timestamp - this.lastFrame > delta) {
