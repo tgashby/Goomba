@@ -634,6 +634,28 @@
                     this.currState.end.call(this);
                 };
 
+                for (var e in entities) {
+                    if (!entities.hasOwnProperty(e)) {
+                        continue;
+                    };
+
+                    var currEnt = entities[e];
+
+                    for (var ev in events) {
+                        if (!events.hasOwnProperty(ev)) {
+                            continue;
+                        };
+
+                        if (events[ev][currEnt.id]) {
+                            delete events[ev][currEnt.id];
+
+                            // HACK, Don't know why this is needed.
+                            events[ev][currEnt.id] = {};
+                            events[ev][currEnt.id].length = 0;
+                        };
+                    }
+                }
+                
                 entities = {};
 
                 this.states[name].start.call(this);
@@ -717,6 +739,8 @@
                     cb.call(this, collisions);
                 };
             });
+
+            return this;
         }
     });
 
@@ -828,6 +852,7 @@
                 ctx.rect(this.x, this.y, this.w, this.h);
                 ctx.fillStyle = this.color || '#8ED6FF';
                 ctx.fill();
+                ctx.strokeStyle = "none";
                 ctx.stroke();
             }
         }
@@ -855,6 +880,15 @@
             this.draw = function (ctx) {
                 ctx.font = this.font || "normal 12px Verdana";
                 ctx.fillText(this.text + this.score, this.x, this.y);
+            }
+        }
+    });
+
+    Goomba.newComponent("Text", {
+        init: function () {
+            this.draw = function (ctx) {
+                ctx.font = this.font || "normal 12px Verdana";
+                ctx.fillText(this.text, this.x, this.y);
             }
         }
     });
