@@ -818,6 +818,7 @@
             context: null,
             w: null,
             h: null,
+            elem: null,
 
             init: function (w, h) {
                 var cv;
@@ -830,10 +831,15 @@
                 cv.style.top = "0px";
 
                 document.body.appendChild(cv);
+                Goomba.canvas.elem = cv;
                 Goomba.canvas.context = cv.getContext('2d');
                 Goomba.canvas.w = w;
                 Goomba.canvas.h = h;
             }
+        },
+
+        background: function (value) {
+            Goomba.canvas.elem.style.background = value;
         },
 
         init: function (w, h) {
