@@ -1,4 +1,5 @@
-(function (window, undefined) {
+(function (window, undef) {
+    
     // Keep track of current ID for next entity
     var currEntID = 1;
 
@@ -7,14 +8,14 @@
 
     // Game speed variables
     var fps = 60, currFrame = 1;
-    var tick, loops = 0, milliPerFrame = 1000 / fps, nextTick = (new Date).getTime();
+    var tick, loops = 0, milliPerFrame = 1000 / fps, nextTick = (new Date()).getTime();
 
 
-    var Goomba = function(selector) {
+    var Goomba = function (selector) {
         return new Goomba.fn.init(selector);
     }
 
-    Goomba.fn = Goomba.prototype = {
+    Goomba.prototype = {
         init: function (selector) {
             // By component
             if (typeof selector === "string") {
@@ -250,6 +251,8 @@
             return this;
         }
     };
+
+    Goomba.fn = Goomba.prototype;
 
     Goomba.fn.init.prototype = Goomba.fn;
 
