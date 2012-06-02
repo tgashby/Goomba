@@ -29,7 +29,7 @@ function startGame() {
 
     Goomba.state("game", function () {
         // Player
-        Goomba.newEntity("Animation, Collidable, Gravity")
+        Goomba.newEntity("Player, Animation, Collidable, Gravity")
             .setImg(Goomba.assets.player)
             .setAnimation("idle")
             .addAttrs({x: Game.w / 2, y: Game.h - 128, xVel: 0, yVel: 0, jumping: false})
@@ -113,9 +113,6 @@ function startGame() {
 
                 this.yVel = 0;
                 this.jumping = false;
-            })
-            .onHit("Goal", function (collisions) {
-                Goomba.state("end");
             });
 
         // Platforms
@@ -135,9 +132,12 @@ function startGame() {
 
 
         // Goal
-        Goomba.newEntity("Goal")
+        Goomba.newEntity("Interactive")
             .setImg(Goomba.assets.goal)
-            .addAttrs({x: Game.w / 2, y: 0});
+            .addAttrs({x: Game.w / 2, y: 0})
+            .onInteract("Player", function () {
+                Goomba.state("end");
+            });
     });
 
     Goomba.state("menu", function () {
