@@ -6,36 +6,36 @@ My apologies in advance.
 
 Contents:
 
-* [Basic Info](#basicinfo)
-* [Hello World](#helloworld)
-* [Functions](#funcs)
-    * [Goomba](#goomba)
-        * [Entities](#entityfuncs)
-            * [addAttrs](#addAttrs)
-            * [addComponent](#addComponent)
-            * [bindEvent](#bindEvent)
+* [Basic Info](#basic-info)
+* [Hello World](#hello-world---pong)
+* [Functions](#functions)
+    * [Goomba](#-goomba)
+        * [Entities](#entity-functions-entity----)
+            * [addAttrs](#addattrs)
+            * [addComponent](#addcomponent)
+            * [bindEvent](#bindevent)
             * [controls](#controls)
-            * [hasComponent](#hasComponent)
-            * [mouseControls](#mouseControls)
-            * [onUpdate](#onUpdate)
-            * [removeComponent](#removeComponent)
-            * [requiresComponent](#requiresComponent)
-            * [triggerEvent](#triggerEvent)
-        * [Global](#globalfuncs)
+            * [hasComponent](#hascomponent)
+            * [mouseControls](#mousecontrols)
+            * [onUpdate](#onupdate)
+            * [removeComponent](#removecomponent)
+            * [requiresComponent](#requirescomponent)
+            * [triggerEvent](#triggerevent)
+        * [Global](#-global-functions-goomba----)
             * [background](#background)
-            * [bindEvent](bindEventglobal)
+            * [bindEvent](bindevent-1)
             * [draw](#draw)
             * [extend](#extend)
-            * [forEach](#forEach)
+            * [forEach](#foreach)
             * [init](#init)
-            * [isComponent](#isComponent)
+            * [isComponent](#iscomponent)
             * [load](#load)
-            * [newComponent](#newComponent)
-            * [newEntity](#newEntity)
-            * [splitSprite](#splitSprite)
+            * [newComponent](#newcomponent)
+            * [newEntity](#newentity)
+            * [splitSprite](#splitsprite)
             * [state](#state)
-            * [triggerEvent](#triggerEventglobal)
-* [Components](#components)
+            * [triggerEvent](#triggerevent-1)
+* [Components](#built-in-components)
     * [Animation](#animation)
     * [Collidable](#collidable)
     * [Color](#color)
@@ -44,8 +44,8 @@ Contents:
     * [Interactive](#interactive)
     * [Scoreboard](#scoreboard)
     * [Text](#text)
-* [Helpful Topics](#helpfultopics)
-    * [Creating new drawable components](#creatingdrawablecomponents)
+* [Helpful Topics](#helpful-topics)
+    * [Creating new drawable components](#creating-new-drawable-components)
 * [Reference](#reference)
     * [Audio](#audio)
     * [Canvas](#canvas)
@@ -55,7 +55,7 @@ Contents:
     * [Timer](#timer)
     * [Viewport](#viewport)
 
-## <a id="basicinfo"></a>Basic info
+## Basic info
 This is an engine meant for games, but could plausibly be used for other multimedia applications.
 
 It is entity and compontent based, so throw your OOP desires out the window.
@@ -64,7 +64,7 @@ This engine runs solely on Canvas, no DOM support.
 
 To check for canvas compatability, read the table [here](http://caniuse.com/#feat=canvas).
 
-## <a id="helloworld"></a>"Hello World" -> Pong
+## "Hello World" -> Pong
 The simplest game I can think of is Pong. Just two rectangles with a bouncing ball.
 
 Here's how you make Pong with Goomba:
@@ -124,36 +124,36 @@ Goomba.newEntity("Collidable, Color")
 ```
 That's it. Everything else is handled for you. No need to worry about game loops or rendering.<br />
 <br />
-## <a id="funcs"></a>Functions
-### <a id="goomba"></a> Goomba
-#### <a id="entityfuncs"></a>Entity Functions (entity.----)
-##### <a id="addAttrs"></a>addAttrs
-##### <a id="addComponent"></a>addComponent
-##### <a id="bindEvent"></a>bindEvent
-##### <a id="controls"></a>controls
-##### <a id="hasComponent"></a>hasComponent
-##### <a id="mouseControls"></a>mouseControls
-##### <a id="onUpdate"></a>onUpdate
-##### <a id="removeComponent"></a>removeComponent
-##### <a id="requiresComponent"></a>requiresComponent
-##### <a id="triggerEvent"></a>triggerEvent
-####  <a id="globalfuncs"></a> Global Functions (Goomba.----)
-##### <a id="background"></a>background
-##### <a id="bindEvent"></a>bindEvent
-##### <a id="draw"></a>draw
-##### <a id="extend"></a>extend
-##### <a id="forEach"></a>forEach
-##### <a id="init"></a>init
-##### <a id="isComponent"></a>isComponent
-##### <a id="load"></a>load
-##### <a id="newComponent"></a>newComponent
-##### <a id="newEntity"></a>newEntity
-##### <a id="splitSprite"></a>splitSprite
-##### <a id="state"></a>state
-##### <a id="triggerEvent"></a>triggerEvent
-## <a id="components"></a>Built in Components
-### <a id="animation"></a>Animation
-### <a id="collidable"></a>Collidable
+## Functions
+### Goomba
+#### Entity Functions (entity.----)
+##### addAttrs
+##### addComponent
+##### bindEvent
+##### controls
+##### hasComponent
+##### mouseControls
+##### onUpdate
+##### removeComponent
+##### requiresComponent
+##### triggerEvent
+####  Global Functions (Goomba.----)
+##### background
+##### bindEvent
+##### draw
+##### extend
+##### forEach
+##### init
+##### isComponent
+##### load
+##### newComponent
+##### newEntity
+##### splitSprite
+##### state
+##### triggerEvent
+## Built in Components
+### Animation
+### Collidable
 For any entity that will collide with something. <br />
 <br />
 Methods:<br />
@@ -162,7 +162,7 @@ onHit("Component", function () { ... }) - Runs callbacks when a collision with t
 <br />
 Attributes required:<br />
 x, y, w, h or x, y, img or setBounds called with a valid polygon<br />
-### <a id="color"></a>Color
+### Color
 Used for entities that are colored rectangles.<br />
 <br />
 Methods:<br />
@@ -173,8 +173,8 @@ x, y, w, h<br />
 <br />
 Attributes optional:<br />
 color (default is '#8ED6FF')<br />
-### <a id="gravity"></a>Gravity
-### <a id="image"></a>Image
+### Gravity
+### Image
 For any entity that will use an image instead of a solid rectangle.<br />
 ** This component is inherited by default **<br />
 All images need to be loaded before the game is started using:
@@ -193,8 +193,8 @@ setImg(Goomba.assets.myImage)<br />
 <br />
 Attributes required:<br />
 x, y, img (handled with the call to setImg)<br />
-### <a id="interactive"></a>Interactive
-### <a id="scoreboard"></a>Scoreboard
+### Interactive
+### Scoreboard
 For any entity that will act as a text scoreboard.<br />
 <br />
 Methods:<br />
@@ -205,9 +205,9 @@ x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex
 <br />
 Attributes optional:<br />
 font (default to "normal 12px Verdana")<br />
-### <a id="text"></a>Text
-## <a id="helpfultopics"></a>Helpful Topics
-### <a id="creatingdrawablecomponents"></a>Creating new drawable components
+### Text
+## Helpful Topics
+### Creating new drawable components
 All that is required for making new components that draw is to provide a "draw" method that takes a canvas context.
 
 Example:
@@ -228,12 +228,12 @@ Goomba.newComponent("Circle", {
 ```
 
 If you make any new entities with the "Circle" component, they will draw as a circle at its x, y coordinate.<br />
-### <a id="reference"></a>Reference
-#### <a id="audio"></a>Audio
-#### <a id="canvas"></a>Canvas
-#### <a id="events"></a>Events
-#### <a id="keyboard"></a>Keyboard
-#### <a id="mouse"></a>Mouse
-#### <a id="timer"></a>Timer
-#### <a id="viewport"></a>Viewport
+### Reference
+#### Audio
+#### Canvas
+#### Events
+#### Keyboard
+#### Mouse
+#### Timer
+#### Viewport
 
