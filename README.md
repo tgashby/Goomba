@@ -131,7 +131,7 @@ Signature:
 Goomba(selector);
 ```
 
-Parameters:
+Parameters:<br />
     selector - String or Number.
         When used with a string, returns all entities that have the series of components specified.
         When used with a number, returns the one component with that id.
