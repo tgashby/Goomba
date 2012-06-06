@@ -130,14 +130,15 @@ Signature:
 ```javascript
 Goomba(selector);
 ```
-
 Parameters:<br />
+<pre>
     selector - String or Number.
         When used with a string, returns all entities that have the series of components specified.
         When used with a number, returns the one component with that id.
+</pre>
 
-Return:
-    Array of entities. Always. Even if used with an id.
+Return:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;Array of entities. Always. Even if used with an id.
 
 Examples:
 ```javascript
@@ -145,8 +146,10 @@ Goomba("Hello"); // Returns all entities with the "Hello" component
 Goomba("Hello World"); // All entities with "Hello" AND "World" components
 Goomba("Hello, World"); // All entities with "Hello" OR "World" components
 ```
-#### Entity Functions (entity.----)
 
+It is also possible to just store entities into variables upon creation, see [newEntity](#newentity).
+#### Entity Functions (entity.----)
+Goomba entities can be used in two ways.
 ##### addAttrs
 Signature:
 
