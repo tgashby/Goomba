@@ -10,7 +10,6 @@
     var fps = 60, currFrame = 1;
     var tick, loops = 0, milliPerFrame = 1000 / fps, nextTick = (new Date()).getTime();
 
-
     var Goomba = function (selector) {
         return new Goomba.fn.init(selector);
     }
@@ -61,18 +60,18 @@
                             };
                         };
                     } else if (currEnt.m_comps[selector]) {
-                        this[len] = e;
+                        this[len] = currEnt;
                         len++;
                     }
                 }
 
-                if (len > 0 && !(and || or)) {
-                    this.extend(comps[selector]);
+                if (len > 0 && !and && !or) {
+                    this.extend(components[selector]);
                 };
 
                 if (comps && and) {
                     for (var i = 0; i < cLen; i++) {
-                        this.extend(comps[comps[i]]);
+                        this.extend(components[comps[i]]);
                     };
                 };
 
@@ -145,7 +144,7 @@
             return this;
         },
 
-        hasComponenet: function (comp) {
+        hasComponent: function (comp) {
             return this.m_comps[comp];
         },
 
@@ -256,7 +255,7 @@
 
     Goomba.fn.init.prototype = Goomba.fn;
 
-    Goomba.extend = Goomba.fn.extend = function (obj) {
+    Goomba.fn.extend = function (obj) {
         var key;
 
         if (!obj) {
@@ -272,6 +271,8 @@
 
         return this;
     };
+
+    Goomba.extend = Goomba.fn.extend;
 
     // Timer
     Goomba.extend({
@@ -327,6 +328,9 @@
 
             ctx.clearRect(0, 0, cvs.w, cvs.h);
 
+            ctx.save();
+            ctx.translate(-1 * Goomba.viewport.x, -1 * Goomba.viewport.y);
+
             for (var id in entities) {
                 if (entities.hasOwnProperty(id)) {
                     var e = entities[id];
@@ -339,22 +343,10 @@
                     ctx.save();
                     e.draw(ctx);
                     ctx.restore();
-
-                    // if ("img" in e && "x" in e && "y" in e) {
-                    //     ctx.drawImage(e.img, e.x, e.y)
-                    // } else if ("x" in e && "y" in e && "w" in e && "h" in e) {
-                    //     ctx.beginPath();
-                    //     ctx.rect(e.x, e.y, e.w, e.h);
-                    //     ctx.fillStyle = e.color || '#8ED6FF';
-                    //     ctx.fill();
-                    //     ctx.stroke();
-                    // } else if ("img" in e) { // Badly made entity w/ image
-                    //     console.log("Entity: " + e.id + " missing x or y attribute");
-                    // } else { // Badly made entity without image
-                    //     console.log("Entity: " + e.id + " missing x, y, w, or h attribute");
-                    // }
                 };
             }
+
+            ctx.restore();
         },
 
         load: function (data, finishedCB) {
@@ -764,8 +756,6 @@
              a.y + a.h > b.y;
     }
 
-    Goomba.bindEvent("Update", function () {});
-
     Goomba.bindEvent("KeyUp", function (event) {
         Goomba.keyboard.state[event.keyCode] = false;
     });
@@ -829,6 +819,13 @@
 
 (function (Goomba, window, document) {
     Goomba.extend({
+        viewport: {
+            x: 0,
+            y: 0,
+            w: 0,
+            h: 0
+        },
+
         canvas: {
             context: null,
             w: null,
@@ -858,9 +855,31 @@
         },
 
         init: function (w, h) {
+            Goomba.viewport.w = w;
+            Goomba.viewport.h = h;
+
             if (!Goomba.canvas.context) {
                 Goomba.canvas.init(w, h);
             };
+
+
+            Goomba.bindEvent("Update", function () {
+                if (Goomba.viewport.x < 0) {
+                    Goomba.viewport.x = 0;
+                };
+
+                if (Goomba.viewport.x > Goomba.viewport.w) {
+                    Goomba.viewport.x = Goomba.viewport.w;
+                };
+
+                if (Goomba.viewport.y < 0) {
+                    Goomba.viewport.y = 0;
+                };
+
+                if (Goomba.viewport.y > Goomba.viewport.h) {
+                    Goomba.viewport.y = Goomba.viewport.h;
+                };
+            });
 
             Goomba.timer.init();
         }
@@ -1008,5 +1027,93 @@ Goomba.newComponent("Color", {
 
         onInteract: function (comp, cb) {
             this.onHit(comp, cb);
+        }
+    });
+
+    Goomba.newComponent("Gravity", {
+        gravConst: 0.5,
+        yVel: 0,
+        falling: true,
+        gravComp: null,
+
+        init: function () {
+            this.requiresComponent("Collidable");
+        },
+
+        gravitateTo: function (comp) {
+            if (comp) {
+                this.gravComp = comp;
+            } else {
+                this.gravComp = "";
+            }
+
+            this.bindEvent("Update", function () {
+                if (this.falling) {
+                    this.yVel += this.gravConst;
+                }
+
+                this.y += this.yVel;
+
+                var collisions = this.getCollisions(this.gravComp);
+
+                if (collisions) {
+                    this.stopFalling(collisions);
+                } else {
+                    this.falling = true;
+                }
+            });
+
+            return this;
+        },
+
+        setGravityConst: function (newConst) {
+            this.gravConst = newConst;
+
+            return this;
+        },
+
+        stopFalling: function (collisions) {
+            if (collisions) {
+                var xOnLeft = this.x < collisions[0].x,
+                    xOnRight = this.x > collisions[0].x + collisions[0].w,
+                    wOnLeft = this.x + this.w < collisions[0].x,
+                    wOnRight = this.x + this.w > collisions[0].x + collisions[0].w,
+                    xWithin = !xOnLeft && !xOnRight,
+                    wWithin = !wOnLeft && !wOnRight,
+                    yAbove = this.y < collisions[0].y,
+                    yBelow = this.y > collisions[0].y,
+                    allAbove = this.y + this.h < collisions[0].y,
+                    allBelow = yBelow,
+                    yWithin = !allAbove && !allBelow;
+
+                // If within the entity, no need to worry about being on it's sides
+                if (xWithin && wWithin) {
+                    // If above it
+                    if (yAbove) {
+                        this.y = collisions[0].y - this.h;
+                        this.falling = false;
+                    }
+
+                    // If below it
+                    if (yBelow) { 
+                        this.y = collisions[0].y + collisions[0].h;
+                    }
+
+                    this.yVel = 0;
+
+                } else {
+                    // If to the right of it
+                    if (wOnRight) {
+                        this.x = collisions[0].x + collisions[0].w;
+                    };
+
+                    // If to the left of it
+                    if (xOnLeft) {
+                        this.x = collisions[0].x - this.w;
+                    };
+                }
+            };
+
+            return this;
         }
     });

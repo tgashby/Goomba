@@ -1,6 +1,61 @@
 # Goomba Engine for Javascript and Canvas
 
-## Basic info
+Because I can't find a Javascript documentation tool I like, I'm going to make this a giant, all-purpose README.
+
+My apologies in advance.
+
+Contents:
+
+* [Basic Info](#basicinfo)
+* [Hello World](#helloworld)
+* [Functions](#funcs)
+    * [Goomba](#goomba)
+        * [Entities](#entityfuncs)
+            * [addAttrs](#addAttrs)
+            * [addComponent](#addComponent)
+            * [bindEvent](#bindEvent)
+            * [controls](#controls)
+            * [hasComponent](#hasComponent)
+            * [mouseControls](#mouseControls)
+            * [onUpdate](#onUpdate)
+            * [removeComponent](#removeComponent)
+            * [requiresComponent](#requiresComponent)
+            * [triggerEvent](#triggerEvent)
+        * [Global](#globalfuncs)
+            * [background](#background)
+            * [bindEvent](bindEventglobal)
+            * [draw](#draw)
+            * [extend](#extend)
+            * [forEach](#forEach)
+            * [init](#init)
+            * [isComponent](#isComponent)
+            * [load](#load)
+            * [newComponent](#newComponent)
+            * [newEntity](#newEntity)
+            * [splitSprite](#splitSprite)
+            * [state](#state)
+            * [triggerEvent](#triggerEventglobal)
+* [Components](#components)
+    * [Animation](#animation)
+    * [Collidable](#collidable)
+    * [Color](#color)
+    * [Gravity](#gravity)
+    * [Image](#image)
+    * [Interactive](#interactive)
+    * [Scoreboard](#scoreboard)
+    * [Text](#text)
+* [Helpful Topics](#helpfultopics)
+    * [Creating new drawable components](#creatingdrawablecomponents)
+* [Reference](#reference)
+    * [Audio](#audio)
+    * [Canvas](#canvas)
+    * [Events](#events)
+    * [Keyboard](#keyboard)
+    * [Mouse](#mouse)
+    * [Timer](#timer)
+    * [Viewport](#viewport)
+
+## <a id="basicinfo"></a>Basic info
 This is an engine meant for games, but could plausibly be used for other multimedia applications.
 
 It is entity and compontent based, so throw your OOP desires out the window.
@@ -9,7 +64,7 @@ This engine runs solely on Canvas, no DOM support.
 
 To check for canvas compatability, read the table [here](http://caniuse.com/#feat=canvas).
 
-### "Hello World" -> Pong
+## <a id="helloworld"></a>"Hello World" -> Pong
 The simplest game I can think of is Pong. Just two rectangles with a bouncing ball.
 
 Here's how you make Pong with Goomba:
@@ -69,9 +124,36 @@ Goomba.newEntity("Collidable, Color")
 ```
 That's it. Everything else is handled for you. No need to worry about game loops or rendering.<br />
 <br />
-
-#### Built in Components
-##### Collidable
+## <a id="funcs"></a>Functions
+### <a id="goomba"></a> Goomba
+#### <a id="entityfuncs"></a>Entity Functions (entity.----)
+##### <a id="addAttrs"></a>addAttrs
+##### <a id="addComponent"></a>addComponent
+##### <a id="bindEvent"></a>bindEvent
+##### <a id="controls"></a>controls
+##### <a id="hasComponent"></a>hasComponent
+##### <a id="mouseControls"></a>mouseControls
+##### <a id="onUpdate"></a>onUpdate
+##### <a id="removeComponent"></a>removeComponent
+##### <a id="requiresComponent"></a>requiresComponent
+##### <a id="triggerEvent"></a>triggerEvent
+####  <a id="globalfuncs"></a> Global Functions (Goomba.----)
+##### <a id="background"></a>background
+##### <a id="bindEvent"></a>bindEvent
+##### <a id="draw"></a>draw
+##### <a id="extend"></a>extend
+##### <a id="forEach"></a>forEach
+##### <a id="init"></a>init
+##### <a id="isComponent"></a>isComponent
+##### <a id="load"></a>load
+##### <a id="newComponent"></a>newComponent
+##### <a id="newEntity"></a>newEntity
+##### <a id="splitSprite"></a>splitSprite
+##### <a id="state"></a>state
+##### <a id="triggerEvent"></a>triggerEvent
+## <a id="components"></a>Built in Components
+### <a id="animation"></a>Animation
+### <a id="collidable"></a>Collidable
 For any entity that will collide with something. <br />
 <br />
 Methods:<br />
@@ -80,8 +162,19 @@ onHit("Component", function () { ... }) - Runs callbacks when a collision with t
 <br />
 Attributes required:<br />
 x, y, w, h or x, y, img or setBounds called with a valid polygon<br />
-
-##### Image
+### <a id="color"></a>Color
+Used for entities that are colored rectangles.<br />
+<br />
+Methods:<br />
+N/A<br />
+<br />
+Attributes required:<br />
+x, y, w, h<br />
+<br />
+Attributes optional:<br />
+color (default is '#8ED6FF')<br />
+### <a id="gravity"></a>Gravity
+### <a id="image"></a>Image
 For any entity that will use an image instead of a solid rectangle.<br />
 ** This component is inherited by default **<br />
 All images need to be loaded before the game is started using:
@@ -100,20 +193,8 @@ setImg(Goomba.assets.myImage)<br />
 <br />
 Attributes required:<br />
 x, y, img (handled with the call to setImg)<br />
-
-##### Color
-Used for entities that are colored rectangles.<br />
-<br />
-Methods:<br />
-N/A<br />
-<br />
-Attributes required:<br />
-x, y, w, h<br />
-<br />
-Attributes optional:<br />
-color (default is '#8ED6FF')<br />
-
-##### Scoreboard
+### <a id="interactive"></a>Interactive
+### <a id="scoreboard"></a>Scoreboard
 For any entity that will act as a text scoreboard.<br />
 <br />
 Methods:<br />
@@ -124,10 +205,9 @@ x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex
 <br />
 Attributes optional:<br />
 font (default to "normal 12px Verdana")<br />
-
-##### More to come....
-
-#### Creating new drawable components
+### <a id="text"></a>Text
+## <a id="helpfultopics"></a>Helpful Topics
+### <a id="creatingdrawablecomponents"></a>Creating new drawable components
 All that is required for making new components that draw is to provide a "draw" method that takes a canvas context.
 
 Example:
@@ -136,7 +216,7 @@ Goomba.newComponent("Circle", {
     init: function () {
         this.draw = function (context) {
             context.beginPath();
-            context.arc(this.x, this.y, 50, 0, 2 * Math.PI, false);
+            context.arc(this.x, this.y, 50, 0, 2  Math.PI, false);
             context.fillStyle = "#8ED6FF";
             context.fill();
             context.lineWidth = 5;
@@ -147,4 +227,13 @@ Goomba.newComponent("Circle", {
 })
 ```
 
-If you make any new entities with the "Circle" component, they will draw as a circle at its x, y coordinate.
+If you make any new entities with the "Circle" component, they will draw as a circle at its x, y coordinate.<br />
+### <a id="reference"></a>Reference
+#### <a id="audio"></a>Audio
+#### <a id="canvas"></a>Canvas
+#### <a id="events"></a>Events
+#### <a id="keyboard"></a>Keyboard
+#### <a id="mouse"></a>Mouse
+#### <a id="timer"></a>Timer
+#### <a id="viewport"></a>Viewport
+
