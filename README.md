@@ -126,33 +126,153 @@ That's it. Everything else is handled for you. No need to worry about game loops
 <br />
 ## Functions
 ### Goomba
+Signature: 
+```javascript
+Goomba(selector);
+```
+
+Parameters:
+    selector - String or Number.
+        When used with a string, returns all entities that have the series of components specified.
+        When used with a number, returns the one component with that id.
+
+Return:
+    Array of entities. Always. Even if used with an id.
+
+Examples:
+```javascript
+Goomba("Hello"); // Returns all entities with the "Hello" component
+Goomba("Hello World"); // All entities with "Hello" AND "World" components
+Goomba("Hello, World"); // All entities with "Hello" OR "World" components
+```
 #### Entity Functions (entity.----)
+
 ##### addAttrs
+Signature:
+
+Parameters:
+
 ##### addComponent
+Signature:
+
+Parameters:
+
 ##### bindEvent
+Signature:
+
+Parameters:
+
 ##### controls
+Signature:
+
+Parameters:
+
 ##### hasComponent
+Signature:
+
+Parameters:
+
 ##### mouseControls
+Signature:
+
+Parameters:
+
 ##### onUpdate
+Signature:
+
+Parameters:
+
 ##### removeComponent
+Signature:
+
+Parameters:
+
 ##### requiresComponent
+Signature:
+
+Parameters:
+
 ##### triggerEvent
+Signature:
+
+Parameters:
+
 ####  Global Functions (Goomba.----)
+
 ##### background
+Signature:
+
+Parameters:
+
 ##### bindEvent
+Signature:
+
+Parameters:
+
 ##### draw
+Signature:
+
+Parameters:
+
 ##### extend
+Signature:
+
+Parameters:
+
 ##### forEach
+Signature:
+
+Parameters:
+
 ##### init
+Signature:
+
+Parameters:
+
 ##### isComponent
+Signature:
+
+Parameters:
+
 ##### load
+Signature:
+
+Parameters:
+
 ##### newComponent
+Signature:
+
+Parameters:
+
 ##### newEntity
+Signature:
+
+Parameters:
+
 ##### splitSprite
+Signature:
+
+Parameters:
+
 ##### state
+Signature:
+
+Parameters:
+
 ##### triggerEvent
+Signature:
+
+Parameters:
+
 ## Built in Components
+
 ### Animation
+
+Methods:
+
+Attributes required:
+
+
 ### Collidable
 For any entity that will collide with something. <br />
 <br />
@@ -174,6 +294,11 @@ x, y, w, h<br />
 Attributes optional:<br />
 color (default is '#8ED6FF')<br />
 ### Gravity
+
+Methods:
+
+Attributes required:
+
 ### Image
 For any entity that will use an image instead of a solid rectangle.<br />
 ** This component is inherited by default **<br />
@@ -194,6 +319,11 @@ setImg(Goomba.assets.myImage)<br />
 Attributes required:<br />
 x, y, img (handled with the call to setImg)<br />
 ### Interactive
+
+Methods:
+
+Attributes required:
+
 ### Scoreboard
 For any entity that will act as a text scoreboard.<br />
 <br />
@@ -206,6 +336,11 @@ x, y, score (usually set to 0 initially), text (the prefix to the scoreboard, ex
 Attributes optional:<br />
 font (default to "normal 12px Verdana")<br />
 ### Text
+
+Methods:
+
+Attributes required:
+
 ## Helpful Topics
 ### Creating new drawable components
 All that is required for making new components that draw is to provide a "draw" method that takes a canvas context.
@@ -230,10 +365,16 @@ Goomba.newComponent("Circle", {
 If you make any new entities with the "Circle" component, they will draw as a circle at its x, y coordinate.<br />
 ### Reference
 #### Audio
+
 #### Canvas
+
 #### Events
+
 #### Keyboard
+
 #### Mouse
+
 #### Timer
+
 #### Viewport
 
