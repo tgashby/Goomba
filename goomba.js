@@ -622,6 +622,20 @@
             return ev.global.push(cb) - 1;
         },
 
+        removeEntity: function (id) {
+            for (var ev in events)
+            {
+                if (events[ev][id]) {
+                    delete events[ev][id];
+
+                    events[ev][id] = {};
+                    events[ev][id].length = 0;
+                };
+            }
+
+            delete entities[id];
+        },
+
         isComponent: function (comp) {
             return comp in components;
         }
@@ -861,25 +875,6 @@
             if (!Goomba.canvas.context) {
                 Goomba.canvas.init(w, h);
             };
-
-
-            Goomba.bindEvent("Update", function () {
-                if (Goomba.viewport.x < 0) {
-                    Goomba.viewport.x = 0;
-                };
-
-                if (Goomba.viewport.x > Goomba.viewport.w) {
-                    Goomba.viewport.x = Goomba.viewport.w;
-                };
-
-                if (Goomba.viewport.y < 0) {
-                    Goomba.viewport.y = 0;
-                };
-
-                if (Goomba.viewport.y > Goomba.viewport.h) {
-                    Goomba.viewport.y = Goomba.viewport.h;
-                };
-            });
 
             Goomba.timer.init();
         }

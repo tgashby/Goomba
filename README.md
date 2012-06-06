@@ -9,7 +9,7 @@ Contents:
 * [Basic Info](#basic-info)
 * [Hello World](#hello-world---pong)
 * [Functions](#functions)
-    * [Goomba](#-goomba)
+    * [Goomba](#goomba)
         * [Entities](#entity-functions-entity----)
             * [addAttrs](#addattrs)
             * [addComponent](#addcomponent)
@@ -32,6 +32,7 @@ Contents:
             * [load](#load)
             * [newComponent](#newcomponent)
             * [newEntity](#newentity)
+            * [removeEntity](#removeentity)
             * [splitSprite](#splitsprite)
             * [state](#state)
             * [triggerEvent](#triggerevent-1)
@@ -138,7 +139,9 @@ Parameters:<br />
 </pre>
 
 Return:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;Array of entities. Always. Even if used with an id.
+<pre>
+    Array of entities. Always. Even if used with an id.
+</pre>
 
 Examples:
 ```javascript
@@ -149,123 +152,383 @@ Goomba("Hello, World"); // All entities with "Hello" OR "World" components
 
 It is also possible to just store entities into variables upon creation, see [newEntity](#newentity).
 #### Entity Functions (entity.----)
-Goomba entities can be used in two ways.
+Goomba entities can be used in two ways.<br />
+```javascript
+// First you need to create your entity
+// Either make a new entity and set it into a variable
+var myFavEnt = Goomba.newEntity("comp1, comp2");
+// OR, don't.
+Goomba.newEntity("comp1, comp2");
+
+// Both will create an entity for Goomba's internal use.
+// If you have a variable, you can refer to the entity by that variable when calling functions
+myFavEnt.entityFunc(...);
+
+//Otherwise, you can get the entity from Goomba.
+Goomba("comp1 comp2")[0].entityFunc(...);
+// The trouble with this method is that if you have more than one entity with those
+// components, you're not guarenteed the order you'll get them back in order.
+```
+
+An important thing to know when dealing with entities is that it's common to chain function calls together. In most, if not all, of the examples, that's how I'm creating entities.
+```javascript
+Goomba.newEntity("hello, world").addAttrs({...}).setImg(Goomba.assets.blah); // And lots more can be chained
+```
+These chains can go on for as long as you have methods left you want to call.
 ##### addAttrs
-Signature:
+Signature:<br />
+```javascript
+ent.addAttrs(obj);
+```
+Parameters:<br />
+<pre>
+    obj - An object containing all the attributes to add to the entity.
+        All attributes will go directly into the entity with their corresponding keys.
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
-Parameters:
-
+This method adds attributes to a given entity. Most often called when initializing an entity.
 ##### addComponent
-Signature:
+Signature:<br />
+```javascript
+ent.addComponent(comp);
+```
+Parameters:<br />
+<pre>
+    comp - A string, the component's name to add.
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
-Parameters:
-
+This method adds an existing (built-in or custom) to an entity.
 ##### bindEvent
-Signature:
+Signature:<br />
+```javascript
+ent.bindEvent(event, callback);
+```
+Parameters:<br />
+<pre>
+    event - A string with the name of the event.
+        If the event doesn't yet exist, it will add it, otherwise it will simply tack on another callback.
+    callback - A function to call when the event is triggered
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
-Parameters:
+Example:
+```javascript
+// Write "Hello" to the console every update cycle
+ent.bindEvent("Update", function () { 
+    console.log("Hello!"); 
+});
+```
+You can learn more about events, look at the [Events](#events) reference section.
 
 ##### controls
-Signature:
+Signature:<br />
+```javascript
+ent.controls(bindings);
+```
+Parameters:<br />
+<pre>
+    bindings - An object containing all the bindings to add to the entity.
+        Bindings take the form of:
+            { KEY: function () {...} }
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
-Parameters:
-
+For a list of key names, look at the [Keyboard](#keyboard) reference.
 ##### hasComponent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### mouseControls
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### onUpdate
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### removeComponent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### requiresComponent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### triggerEvent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ####  Global Functions (Goomba.----)
 
 ##### background
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### bindEvent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### draw
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### extend
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### forEach
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### init
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### isComponent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### load
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### newComponent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### newEntity
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
+
+##### removeEntity
+Signature:<br />
+```javascript
+
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### splitSprite
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### state
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ##### triggerEvent
-Signature:
+Signature:<br />
+```javascript
 
-Parameters:
+```
+Parameters:<br />
+<pre>
+    
+</pre>
+Return:<br />
+<pre>
+    The entity.
+</pre>
 
 ## Built in Components
 
