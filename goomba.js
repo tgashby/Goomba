@@ -399,6 +399,8 @@
             for (var key in frames) {
                 image[key] = frames[key];
             };
+
+            return this;
         },
 
         audio: {
@@ -606,6 +608,8 @@
                     };
                 }
             }
+
+            return this;
         },
 
         bindEvent: function (event, cb) {
@@ -619,7 +623,7 @@
                 ev.global = [];
             };
 
-            return ev.global.push(cb) - 1;
+            return this;
         },
 
         removeEntity: function (id) {
@@ -634,6 +638,8 @@
             }
 
             delete entities[id];
+
+            return this;
         },
 
         isComponent: function (comp) {
@@ -1009,7 +1015,7 @@ Goomba.newComponent("Color", {
 
                 this.lastFrame += delta;
                 return this;
-            }
+            
 
             return this;
         }
