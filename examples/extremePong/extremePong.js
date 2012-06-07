@@ -79,8 +79,8 @@ function startGame () {
             }).onHit("Paddle", function(collisions) {
                 this.velX = -this.velX;
 
-                this.velX += this.velX < 0 ? -0.4 : 0.4;
-                this.velY += this.velY < 0 ? -0.4 : 0.4;
+                this.velX += this.velX < 0 ? -Math.random() / 2 : Math.random() / 2;
+                this.velY += this.velY < 0 ? -Math.random() / 2 : Math.random() / 2;
 
                 this.x = this.x < Game.width / 2 ? 
                     collisions[0].x + collisions[0].w : collisions[0].x - this.w;
