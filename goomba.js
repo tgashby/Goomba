@@ -54,7 +54,7 @@
                                 score++;
                             };
 
-                            if (and && score = cLen || or && score > 0) {
+                            if (and && score == cLen || or && score > 0) {
                                 this[len] = e;
                                 len++;
                             };
