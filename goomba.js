@@ -1016,8 +1016,13 @@ Goomba.newComponent("Color", {
 
                 this.lastFrame += delta;
                 return this;
+<<<<<<< HEAD
             }
 
+=======
+            
+            }
+>>>>>>> 24b4a432e6f661832b3bf786590ae5c552775909
             return this;
         }
     });
