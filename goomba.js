@@ -1016,7 +1016,7 @@ Goomba.newComponent("Color", {
                 this.lastFrame += delta;
                 return this;
             
-
+            }
             return this;
         }
     });
