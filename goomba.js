@@ -54,7 +54,7 @@
                                 score++;
                             };
 
-                            if (and && score = cLen || or && score > 0) {
+                            if (and && score == cLen || or && score > 0) {
                                 this[len] = e;
                                 len++;
                             };
@@ -613,6 +613,7 @@
         },
 
         bindEvent: function (event, cb) {
+
             if (!events[event]) {
                 events[event] = {};
             };
@@ -623,7 +624,7 @@
                 ev.global = [];
             };
 
-            return this;
+            return ev.global.push(cb) - 1;
         },
 
         removeEntity: function (id) {
@@ -1015,7 +1016,7 @@ Goomba.newComponent("Color", {
 
                 this.lastFrame += delta;
                 return this;
-            
+            }
 
             return this;
         }
