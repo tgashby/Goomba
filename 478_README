@@ -1,0 +1,26 @@
+Goomba 478 README
+*****************
+
+Project Name: Goomba, the Javascript Game Engine
+Team Members: Taggart Ashby
+
+"Compilation and Creation": Because my project is an engine in Javascript, there is no compilation or creation, and you can't "run" it.
+
+The most in-depth and up-to-date information for using the Goomba Engine is available at: https://github.com/tgashby/Goomba#readme
+
+Example games and code will be posted at: https://github.com/tgashby/Goomba/tree/master/examples
+
+As a very brief overview, you will need 2-3 files to get a game running with Goomba:
+1. An HTML file to set up the web-page.
+	Here's an example:
+		<!DOCTYPE html>
+		<head>
+			<script type="text/javascript" src="goomba.js"></script>
+		</head>
+		<body>
+			<script type="text/javascript" src="mygame.js"></script>
+		</body>
+
+2. The goomba.js file, available in this folder or most up to date at: https://github.com/tgashby/Goomba
+
+3. Your own game file, called "mygame.js" in the HTML example, but the name of the file is unimportant. This file will use the Goomba Engine to create your game.

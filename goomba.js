@@ -624,7 +624,9 @@
                 ev.global = [];
             };
 
-            return ev.global.push(cb) - 1;
+            ev.global.push(cb);
+            
+            return ev.global.length - 1;
         },
 
         removeEntity: function (id) {

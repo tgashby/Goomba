@@ -2,6 +2,8 @@
 
 Because I can't find a Javascript documentation tool I like, I'm going to make this a giant, all-purpose README.
 
+*WARNING: Goomba has only been tested using Chrome. A recent run on Firefox didn't work at all...*
+
 My apologies in advance.
 
 Contents:
