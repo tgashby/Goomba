@@ -584,7 +584,7 @@ Attributes required:<br />
 x, y<br />
 
 Function calls required:<br />
-[splitSprite](#splitesprite), setImg
+[splitSprite](#splitsprite), setImg
 
 ### Collidable
 For any entity that will collide with something. <br />
