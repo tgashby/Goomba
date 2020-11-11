@@ -1,5 +1,5 @@
 (function (window, undef) {
-    
+
     // Keep track of current ID for next entity
     var currEntID = 1;
 
@@ -113,7 +113,7 @@
 
             if (comp.indexOf(',') !== -1) {
                 comps = comp.split(/\s*,\s*/);
-            } 
+            }
 
             for (var i = 0; i < comps.length; i++) {
                 this.m_comps[comps[i]] = true;
@@ -123,7 +123,7 @@
                 if (components[comps[i]] && "init" in components[comps[i]]) {
                     components[comps[i]].init.call(this);
                 };
-            }           
+            }
 
             return this;
         },
@@ -209,19 +209,19 @@
             return this;
         },
 
-        controls: function(bindings) {
+        controls: function (bindings) {
             var x = this;
 
             for (var key in bindings) {
                 if (bindings.hasOwnProperty(key)) {
-                    var f = (function(k) {
-                        return function() {
+                    var f = (function (k) {
+                        return function () {
                             if (Goomba.keyboard.state[Goomba.keyboard.keys[k]]) {
                                 bindings[k].call(x);
                             }
                         };
                     })(key);
-                    
+
                     this.bindEvent("Update", f);
                 };
             }
@@ -306,7 +306,7 @@
                 };
 
                 while (this.currTime > nextTick) {
-                    Goomba.triggerEvent("Update", {currFrame: currFrame++});
+                    Goomba.triggerEvent("Update", { currFrame: currFrame++ });
                     nextTick += milliPerFrame;
                     loops++;
                 }
@@ -542,7 +542,7 @@
                 OPEN_BRACKET: 219,
                 BCK_SLASH: 220,
                 CLOSE_BRACKET: 221,
-                QUTOTE: 222
+                QUOTE: 222
             },
 
             state: {}
@@ -580,7 +580,7 @@
             };
 
             if (!ent.draw) {
-                ent.addComponent("Image");
+                ent.addComponent("Color");
             };
 
             return ent;
@@ -625,13 +625,12 @@
             };
 
             ev.global.push(cb);
-            
+
             return ev.global.length - 1;
         },
 
         removeEntity: function (id) {
-            for (var ev in events)
-            {
+            for (var ev in events) {
                 if (events[ev][id]) {
                     delete events[ev][id];
 
@@ -685,7 +684,7 @@
                         };
                     }
                 }
-                
+
                 entities = {};
 
                 this.states[name].start.call(this);
@@ -706,7 +705,7 @@
         }
     });
 
-    function UID () {
+    function UID() {
         var newID = currEntID++;
 
         if (newID in entities) {
@@ -719,13 +718,13 @@
     Goomba.newComponent("Collidable", {
         bounds: null,
 
-        init: function() {
+        init: function () {
 
         },
 
-        setBounds: function(poly) {
+        setBounds: function (poly) {
             if (!poly) {
-                this.bounds = {x: 0, y: 0, w: this.w, h: this.h};
+                this.bounds = { x: 0, y: 0, w: this.w, h: this.h };
             } else {
                 this.bounds = poly;
             }
@@ -774,9 +773,9 @@
 
     function collides(a, b) {
         return a.x < b.x + b.w &&
-             a.x + a.w > b.x &&
-             a.y < b.y + b.h &&
-             a.y + a.h > b.y;
+            a.x + a.w > b.x &&
+            a.y < b.y + b.h &&
+            a.y + a.h > b.y;
     }
 
     Goomba.bindEvent("KeyUp", function (event) {
@@ -796,7 +795,7 @@
     });
 
     Goomba.bindEvent("MouseMove", function (event) {
-        Goomba.mouse.position = {x: event.offsetX, y: event.offsetY};
+        Goomba.mouse.position = { x: event.offsetX, y: event.offsetY };
 
         Goomba.mouse.onEntities.splice(0, Goomba.mouse.onEntities.length);
 
@@ -817,23 +816,23 @@
         };
     });
 
-    window.addEventListener('keyup', function(event) {
+    window.addEventListener('keyup', function (event) {
         Goomba.triggerEvent("KeyUp", event);
     }, false);
 
-    window.addEventListener('keydown', function(event) {
+    window.addEventListener('keydown', function (event) {
         Goomba.triggerEvent("KeyDown", event);
     }, false);
 
-    window.addEventListener('mousedown', function(event) {
+    window.addEventListener('mousedown', function (event) {
         Goomba.triggerEvent("MouseDown", event);
     }, false);
 
-    window.addEventListener('mouseup', function(event) {
+    window.addEventListener('mouseup', function (event) {
         Goomba.triggerEvent("MouseUp", event);
     }, false);
 
-    window.addEventListener('mousemove', function(event) {
+    window.addEventListener('mousemove', function (event) {
         Goomba.triggerEvent("MouseMove", event);
     });
 
@@ -891,233 +890,235 @@
 })(Goomba, window, window.document);
 
 Goomba.newComponent("Color", {
-        init: function () {
-            this.draw = function (ctx) {
-                ctx.beginPath();
-                ctx.rect(this.x, this.y, this.w, this.h);
-                ctx.fillStyle = this.color || '#8ED6FF';
-                ctx.fill();
-                ctx.strokeStyle = "none";
-                ctx.stroke();
-            }
+    init: function () {
+        this.draw = function (ctx) {
+            ctx.beginPath();
+            ctx.rect(this.x, this.y, this.w, this.h);
+            ctx.fillStyle = this.color || '#8ED6FF';
+            ctx.fill();
+            ctx.strokeStyle = "none";
+            ctx.stroke();
         }
-    });
+    }
+});
 
-    Goomba.newComponent("Image", {
-        init: function () {
-            this.draw = function (ctx) {
+Goomba.newComponent("Image", {
+    init: function () {
+        this.draw = function (ctx) {
+            if (this.img) {
                 ctx.drawImage(this.img, this.x, this.y);
             }
-        },
-
-        setImg: function (image) {
-            this.img = image;
-
-            this.w = this.img.width;
-            this.h = this.img.height;
-
-            return this;
         }
-    });
+    },
 
-    Goomba.newComponent("Scoreboard", {
-        init: function() {
-            this.draw = function (ctx) {
-                ctx.font = this.font || "normal 12px Verdana";
-                ctx.fillText(this.text + this.score, this.x, this.y);
-            }
+    setImg: function (image) {
+        this.img = image;
+
+        this.w = this.img.width;
+        this.h = this.img.height;
+
+        return this;
+    }
+});
+
+Goomba.newComponent("Scoreboard", {
+    init: function () {
+        this.draw = function (ctx) {
+            ctx.font = this.font || "normal 12px Verdana";
+            ctx.fillText(this.text + this.score, this.x, this.y);
         }
-    });
+    }
+});
 
-    Goomba.newComponent("Text", {
-        init: function () {
-            this.draw = function (ctx) {
-                ctx.font = this.font || "normal 12px Verdana";
-                ctx.fillText(this.text, this.x, this.y);
-            }
+Goomba.newComponent("Text", {
+    init: function () {
+        this.draw = function (ctx) {
+            ctx.font = this.font || "normal 12px Verdana";
+            ctx.fillText(this.text, this.x, this.y);
         }
-    });
+    }
+});
 
-    Goomba.newComponent("Animation", {
-        init: function () {
-            this.draw = function (ctx) {
-                if (!this.img) {
-                    console.log("No image associated with animation entity");
-                    return;
-                };
+Goomba.newComponent("Animation", {
+    init: function () {
+        this.draw = function (ctx) {
+            if (!this.img) {
+                console.log("No image associated with animation entity");
+                return;
+            };
 
-                this.animate(Date.now()); // Timestamp inside?
+            this.animate(Date.now()); // Timestamp inside?
 
-                ctx.save();
-                ctx.translate(this.x, this.y);
+            ctx.save();
+            ctx.translate(this.x, this.y);
 
-                if (this.flip) {
-                    ctx.scale(-1, 1);
-                    ctx.translate(-this.w, 0);
-                };
+            if (this.flip) {
+                ctx.scale(-1, 1);
+                ctx.translate(-this.w, 0);
+            };
 
-                ctx.drawImage(this.img, (this.frame % this.cellsWide) * this.w, Math.floor(this.frame / this.cellsWide) * this.h, this.w, this.h, 0, 0, this.w, this.h);
-                ctx.restore();
-            }
-        },
+            ctx.drawImage(this.img, (this.frame % this.cellsWide) * this.w, Math.floor(this.frame / this.cellsWide) * this.h, this.w, this.h, 0, 0, this.w, this.h);
+            ctx.restore();
+        }
+    },
 
-        setImg: function (image) {
-            this.img = image;
+    setImg: function (image) {
+        this.img = image;
 
-            this.flip = false;
-            this.cellsWide = this.img.naturalWidth / this.img.spriteWidth;
-            this.frame = 0;
-            this.currAnim = null;
+        this.flip = false;
+        this.cellsWide = this.img.naturalWidth / this.img.spriteWidth;
+        this.frame = 0;
+        this.currAnim = null;
+        this.lastFrame = null;
+
+        this.w = this.img.spriteWidth;
+        this.h = this.img.spriteHeight;
+
+        return this;
+    },
+
+    setAnimation: function (animation) {
+        if (this.currAnim !== animation) {
+            this.currAnim = animation;
             this.lastFrame = null;
-
-            this.w = this.img.spriteWidth;
-            this.h = this.img.spriteHeight;
-
-            return this;
-        },
-
-        setAnimation: function (animation) {
-            if (this.currAnim !== animation) {
-                this.currAnim = animation;
-                this.lastFrame = null;
-                if (this.currAnim) {
-                    this.frame = 0;
-                };
-            };
-
-            return this;
-        },
-
-        resetAnimation: function (animation) {
-            if (this.currAnim === animation) {
-                this.lastFrame = null;
+            if (this.currAnim) {
                 this.frame = 0;
-            } else {
-                this.setAnimation(animation);
-            }
-        },
-
-        animate: function (timestamp) {
-            if (!this.currAnim) {
-                return this;
             };
+        };
 
-            var anim = this.img[this.currAnim];
-            if (!this.lastFrame) {
+        return this;
+    },
+
+    resetAnimation: function (animation) {
+        if (this.currAnim === animation) {
+            this.lastFrame = null;
+            this.frame = 0;
+        } else {
+            this.setAnimation(animation);
+        }
+    },
+
+    animate: function (timestamp) {
+        if (!this.currAnim) {
+            return this;
+        };
+
+        var anim = this.img[this.currAnim];
+        if (!this.lastFrame) {
+            this.frame = anim.start;
+            this.lastFrame = timestamp;
+            return this;
+        };
+
+        var delta = 1.0 / anim.fps * 1000;
+        if (timestamp - this.lastFrame > delta) {
+            this.frame++;
+            if (this.frame > anim.end) {
                 this.frame = anim.start;
-                this.lastFrame = timestamp;
-                return this;
             };
 
-            var delta = 1.0 / anim.fps * 1000;
-            if (timestamp - this.lastFrame > delta) {
-                this.frame++;
-                if (this.frame > anim.end) {
-                    this.frame = anim.start;
+            this.lastFrame += delta;
+            return this;
+        }
+
+        return this;
+    }
+});
+
+Goomba.newComponent("Interactive", {
+    init: function () {
+        this.requiresComponent("Collidable");
+    },
+
+    onInteract: function (comp, cb) {
+        this.onHit(comp, cb);
+    }
+});
+
+Goomba.newComponent("Gravity", {
+    gravConst: 0.5,
+    yVel: 0,
+    falling: true,
+    gravComp: null,
+
+    init: function () {
+        this.requiresComponent("Collidable");
+    },
+
+    gravitateTo: function (comp) {
+        if (comp) {
+            this.gravComp = comp;
+        } else {
+            this.gravComp = "";
+        }
+
+        this.bindEvent("Update", function () {
+            if (this.falling) {
+                this.yVel += this.gravConst;
+            }
+
+            this.y += this.yVel;
+
+            var collisions = this.getCollisions(this.gravComp);
+
+            if (collisions) {
+                this.stopFalling(collisions);
+            } else {
+                this.falling = true;
+            }
+        });
+
+        return this;
+    },
+
+    setGravityConst: function (newConst) {
+        this.gravConst = newConst;
+
+        return this;
+    },
+
+    stopFalling: function (collisions) {
+        if (collisions) {
+            var xOnLeft = this.x < collisions[0].x,
+                xOnRight = this.x > collisions[0].x + collisions[0].w,
+                wOnLeft = this.x + this.w < collisions[0].x,
+                wOnRight = this.x + this.w > collisions[0].x + collisions[0].w,
+                xWithin = !xOnLeft && !xOnRight,
+                wWithin = !wOnLeft && !wOnRight,
+                yAbove = this.y < collisions[0].y,
+                yBelow = this.y > collisions[0].y,
+                allAbove = this.y + this.h < collisions[0].y,
+                allBelow = yBelow,
+                yWithin = !allAbove && !allBelow;
+
+            // If within the entity, no need to worry about being on it's sides
+            if (xWithin && wWithin) {
+                // If above it
+                if (yAbove) {
+                    this.y = collisions[0].y - this.h;
+                    this.falling = false;
+                }
+
+                // If below it
+                if (yBelow) {
+                    this.y = collisions[0].y + collisions[0].h;
+                }
+
+                this.yVel = 0;
+
+            } else {
+                // If to the right of it
+                if (wOnRight) {
+                    this.x = collisions[0].x + collisions[0].w;
                 };
 
-                this.lastFrame += delta;
-                return this;
+                // If to the left of it
+                if (xOnLeft) {
+                    this.x = collisions[0].x - this.w;
+                };
             }
-            
-            return this;
-        }
-    });
+        };
 
-    Goomba.newComponent("Interactive", {
-        init: function () {
-            this.requiresComponent("Collidable");
-        },
-
-        onInteract: function (comp, cb) {
-            this.onHit(comp, cb);
-        }
-    });
-
-    Goomba.newComponent("Gravity", {
-        gravConst: 0.5,
-        yVel: 0,
-        falling: true,
-        gravComp: null,
-
-        init: function () {
-            this.requiresComponent("Collidable");
-        },
-
-        gravitateTo: function (comp) {
-            if (comp) {
-                this.gravComp = comp;
-            } else {
-                this.gravComp = "";
-            }
-
-            this.bindEvent("Update", function () {
-                if (this.falling) {
-                    this.yVel += this.gravConst;
-                }
-
-                this.y += this.yVel;
-
-                var collisions = this.getCollisions(this.gravComp);
-
-                if (collisions) {
-                    this.stopFalling(collisions);
-                } else {
-                    this.falling = true;
-                }
-            });
-
-            return this;
-        },
-
-        setGravityConst: function (newConst) {
-            this.gravConst = newConst;
-
-            return this;
-        },
-
-        stopFalling: function (collisions) {
-            if (collisions) {
-                var xOnLeft = this.x < collisions[0].x,
-                    xOnRight = this.x > collisions[0].x + collisions[0].w,
-                    wOnLeft = this.x + this.w < collisions[0].x,
-                    wOnRight = this.x + this.w > collisions[0].x + collisions[0].w,
-                    xWithin = !xOnLeft && !xOnRight,
-                    wWithin = !wOnLeft && !wOnRight,
-                    yAbove = this.y < collisions[0].y,
-                    yBelow = this.y > collisions[0].y,
-                    allAbove = this.y + this.h < collisions[0].y,
-                    allBelow = yBelow,
-                    yWithin = !allAbove && !allBelow;
-
-                // If within the entity, no need to worry about being on it's sides
-                if (xWithin && wWithin) {
-                    // If above it
-                    if (yAbove) {
-                        this.y = collisions[0].y - this.h;
-                        this.falling = false;
-                    }
-
-                    // If below it
-                    if (yBelow) { 
-                        this.y = collisions[0].y + collisions[0].h;
-                    }
-
-                    this.yVel = 0;
-
-                } else {
-                    // If to the right of it
-                    if (wOnRight) {
-                        this.x = collisions[0].x + collisions[0].w;
-                    };
-
-                    // If to the left of it
-                    if (xOnLeft) {
-                        this.x = collisions[0].x - this.w;
-                    };
-                }
-            };
-
-            return this;
-        }
-    });
+        return this;
+    }
+});
